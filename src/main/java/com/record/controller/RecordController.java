@@ -11,14 +11,21 @@ import com.record.service.RecordService;
 
 @Controller
 public class RecordController {
-	
+
 	@Resource
 	private RecordService recordService;
 
 	@PostMapping("/add_record")
 	public String addRecord(Model model, GameBean gameBean) {
+		// 檢查本次分數加總是否為0
+		boolean sumIsZero = recordService.sumIsZero(gameBean.getPlayers());
+		if (!sumIsZero) {
+			return "record_page";
+		}
 		
-		model.addAttribute("gameBean",gameBean);
+		recordService.addRecord(gameBean);
+
+		model.addAttribute("gameBean", gameBean);
 		return "record_page";
 	}
 }

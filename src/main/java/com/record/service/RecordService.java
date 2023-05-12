@@ -2,6 +2,7 @@ package com.record.service;
 
 import java.util.List;
 
+import com.inputplayer.model.GameBean;
 import com.inputplayer.model.Player;
 
 public interface RecordService {
@@ -11,5 +12,7 @@ public interface RecordService {
 	 * @param players
 	 * @return true 加總為0
 	 */
-	public boolean sumRecordIsZero(List<Player> players);
+	public boolean sumIsZero(List<Player> players);
+
+	public void addRecord(GameBean gameBean);
 }
