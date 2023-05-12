@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件存放CRUD的sql语句 -->
+<mapper namespace="com.inputplayer.dao.InputPlayerMapper">
+
+	<!-- 新增時間，返回場次(id) -->
+	<insert id="saveGameInfo"
+		parameterType="com.inputplayer.model.GameBean"
+		useGeneratedKeys="true" keyProperty="gameId">
+		insert into t_game
+			(
+				game_datetime
+			)
+		value
+			(
+				#{gameTime}
+			)
+	</insert>
+	
+	<!-- 寫入場次及玩家簡稱 -->
+	<insert id="savePlayerInfo"
+		parameterType="com.inputplayer.model.GameBean">
+	insert into t_player
+		(
+			fk_game_id,
+			player_id,
+			player_name
+		)
+		<foreach collection="players" item="player" open="values" separator=",">
+	        (
+	            #{gameId},
+	            #{player.playerId},
+	            #{player.playerName}
+	        )
+	    </foreach>
+	</insert>
+</mapper>

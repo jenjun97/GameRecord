@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>桌遊點數記錄表</title>
+</head>
+
+<body>
+    <div class="ml-3 mt-3">
+        <h3>桌遊點數記錄表</h3>
+    </div>
+    </br>
+
+    <!-- -------------------------------------------------------------------------------------輸入玩家人數 -->
+    <div id="play_num_div" class="ml-3 col-5">
+        <label class="form-label" for="play_num">輸入玩家人數</label>
+        <input class="form-control mb-2" type="tel" id="play_num" min="2" />
+        <button class="btn btn-primary" id="play_num_btn">送出</button>
+    </div>
+    <script>
+        // 按下「輸入玩家人數」送出按鈕觸發事件
+        $("#play_num_btn").on("click", function () {
+            // 判斷輸入的人數
+            if ($("#play_num").val() < 2) {
+                // alert
+                Swal.fire({
+                    icon: 'error',
+                    title: '玩家人數要大於1'
+                })
+
+            } else {
+                play_num = $("#play_num").val();
+                $("#play_num_div").hide();
+
+                // 顯示輸入玩家姓名欄位div
+                $("#input_name_div").show();
+
+                // 建立輸入簡稱欄位
+                creatInputName(play_num);
+            }
+        });
+
+        // 建立輸入簡稱欄位
+        function creatInputName(num) {
+            for (let i = num; i >= 1; i--) {
+                // 建立包含 label 和 input 的 div 元素
+                let inputGroup = $('<div>', {
+                    class: 'row mb-1'
+                });
+
+                // 建立 label 元素
+                let label = $('<label>', {
+                    class: 'col-4 form-label',
+                    for: 'input_name_' + i,
+                    text: '玩家' + i + '名稱：'
+                });
+
+                // 建立 input 元素
+                let input = $('<input>', {
+                    class: 'col-3 form-control input_user_name',
+                    type: 'text',
+                    id: 'input_name_' + i
+                });
+
+                // 將 inputWrapper 加入 inputGroup 元素
+                inputGroup.append(label, input);
+
+                $('#input_name_div').prepend(inputGroup); // 將 inputGroup 加入指定的 div 元素中
+            }
+        }
+    </script>
+    <!-- -------------------------------------------------------------------------------------輸入玩家簡稱 -->
+    <div class="ml-3" id="input_name_div">
+        <button class="btn btn-primary" id="creat_name_btn">送出</button>
+    </div>
+
+    <script>
+        // 按下「輸入玩家姓名」送出按鈕觸發事件
+        $("#creat_name_btn").on("click", function () {
+            // 取出玩家簡稱值存成陣列
+            $('.input_user_name').each(function (index) {
+                user_name_ary[index] = $(this).val(); // 將每個input的值存入陣列
+            });
+            // 關閉簡稱輸入欄
+            $('#input_name_div').hide();
+
+            // 顯示玩家簡稱div
+            $('#user_name_div').show();
+            console.log(user_name_ary);
+            // 創建玩家簡稱
+            createHeaders(user_name_ary);
+
+            // 創建玩家總分欄
+            createTotalRecode(user_name_ary);
+
+            // 創建輸入分數提示欄
+            createRecodeTitle(play_num + 1);
+
+            // 創建分數輸入欄
+            createScoreInput(user_name_ary);
+        });
+
+        // 創建簡稱
+        function createHeaders(name_ary) {
+            // 透過迴圈創建td元素
+            $.each(name_ary, function (index, value) {
+                let td = $('<td>', {
+                    class: '',
+                    id: 'user_' + index,
+                    text: value,
+                });
+                // 將td元素加入tr元素中
+                $("#user_name_tr").append(td);
+                console.log(index + ":" + value)
+            });
+        }
+
+        // 創建總分欄
+        function createTotalRecode(name_ary) {
+            // 透過迴圈創建td元素
+            $.each(name_ary, function (index, value) {
+                let td = $('<td>', {
+                    id: 'total_recode_' + index,
+                    text: '0'
+                });
+                // 將td元素加入tr元素中
+                $("#total_recode").append(td);
+            });
+        }
+
+        // 創建輸入分數提示欄
+        function createRecodeTitle(num) {
+            // 透過迴圈創建td元素
+            let td = $('<td>', {
+                colspan: num,
+                text: '↓--輸入本局得失分--↓'
+            });
+            // 將td元素加入tr元素中
+            $("#recode_title").append(td);
+        }
+
+        // 創建分數輸入欄
+        function createScoreInput(name_ary) {
+            // 透過迴圈創建td元素
+            $.each(name_ary, function (index, value) {
+                let td = $('<td>');
+                let input = $('<input/>', {
+                    class: 'form-control mb-2 input_score_class',
+                    type: 'tel',
+                    id: 'input_score_' + index
+                });
+                td.append(input);
+                $("#input_score").append(td);
+            });
+        }
+    </script>
+
+    <!-- -------------------------------------------------------------------------------------顯示簡稱及總分 -->
+    <div id="user_name_div">
+        <table class="table">
+            <tbody>
+                <tr class="text-center" id="user_name_tr">
+                    <td>簡稱</td>
+                </tr>
+                <tr class="text-center" id="total_recode">
+                    <td>總分</td>
+                </tr>
+                <tr class="text-center" id="recode_title">
+                </tr>
+                <tr class="text-center" id="input_score">
+                    <td>
+                        <button class="btn btn-primary" id="input_score_btn">儲存</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table class="table">
+            <tbody id="score_recode_list">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $("#input_score_btn").on("click", function () {
+            // 檢查輸入分數
+            if (!checkScore("input_score_class")) {
+                // alert
+                Swal.fire({
+                    icon: 'error',
+                    title: '分數輸入不正確，請重新確認'
+                })
+                return;
+            }
+            // 寫入記錄
+            addScoreRecode("input_score_class", "input_score", run_time);
+            run_time++;
+
+            // 加總顯示
+            totalRecode("total_recode_", "user_recode_", play_num);
+
+            // 清空欄位
+            cleanInput("input_score_class");
+        });
+
+        // 檢查輸入分數
+        function checkScore(className) {
+            let sumScore = 0;
+            // 反單引號
+            $(`.${className}`).each(function (index) {
+                sumScore = sumScore + parseInt($(this).val());
+            });
+
+            if (sumScore === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // 新增一筆記錄
+        function addScoreRecode(in_class, out_class, run_num) {
+            let tr = $('<tr>', {
+                class: 'text-center'
+            });
+            let td_run_num = $('<td>', {
+                text: '# ' + run_num
+            });
+            tr.append(td_run_num);
+            // 反單引號
+            $(`.${in_class}`).each(function (index) {
+                let td = $('<td>', {
+                    class: 'user_recode_' + index,
+                    text: $(this).val()
+                });
+                tr.append(td);
+            });
+            // 反單引號
+            tr.insertAfter($(`#${out_class}`));
+        }
+
+        // 加總顯示
+        function totalRecode(total_id, recode_class, num) {
+            for (let i = 0; i < num; i++) {
+                let sum = 0;
+                // 反單引號
+                $(`.${recode_class}${i}`).each(function (index) {
+                    sum = sum + parseInt($(this).text());
+                });
+                $(`#${total_id}${i}`).text(sum);
+            }
+        }
+
+        // 清空輸入欄
+        function cleanInput(input_class_name) {
+            $(`.${input_class_name}`).each(function (index) {
+                $(this).val("");
+            });
+        }
+
+    </script>
+
+</body>
+<script>
+    // 玩家人數
+    let play_num = 0;
+
+    // 玩家簡稱
+    let user_name_ary = [];
+
+    // 局數
+    let run_time = 1;
+
+    // 初始化
+    $(document).ready(function () {
+        // 預設玩家人數
+        $("#play_num").val(2);
+
+        // 預設關閉輸入簡稱欄位及按鈕
+        $("#input_name_div").hide();
+
+        // 預設關閉顯示簡稱欄位
+        $("#user_name_div").hide();
+    });
+
+</script>
+
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+
+<head>
+<meta charset="UTF-8">
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- sweetalart -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- bootstrap -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<title>桌遊點數記錄表</title>
+</head>
+
+<body>
+	<div class="ml-3 mt-3">
+		<h3>桌遊點數記錄表</h3>
+	</div>
+	</br>
+
+	<div id="play_num_div" class="ml-3 col-5">
+		<form action="/input_player" method="post">
+			<label class="form-label" for="play_num">輸入玩家人數</label> <input
+				class="form-control mb-2" type="tel" id="play_num" name="playerNum"
+				min="2" />
+			<button class="btn btn-primary" id="play_num_btn">送出</button>
+		</form>
+	</div>
+
+	<script>
+		// 初始化
+		$(document).ready(function() {
+			// 預設玩家人數
+			$("#play_num").val(2);
+		});
+
+		// 按下「輸入玩家人數」送出按鈕觸發事件
+		$("#play_num_btn").on("click", function() {
+			event.preventDefault(); // 取消預設行為
+			if ($("#play_num").val() < 2) {
+				// alert
+				Swal.fire({
+					icon : 'error',
+					title : '玩家人數要大於1'
+				})
+				return;
+			}
+			$('form').submit(); // 觸發表單提交事件
+		});
+	</script>
+</body>
+
+</html>
