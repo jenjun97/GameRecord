@@ -23,7 +23,7 @@ public class RecordController {
 			return "record_page";
 		}
 		
-		recordService.addRecord(gameBean);
+		gameBean = recordService.action(gameBean);
 
 		model.addAttribute("gameBean", gameBean);
 		return "record_page";

@@ -19,6 +19,7 @@
 <body>
 	<div class="ml-3 mt-3">
 		<h3>桌遊點數記錄表</h3>
+		<button class="btn btn-primary" id="index_btn" onclick="goIndex()">首頁</button>
 	</div>
 	</br>
 	<div>
@@ -59,6 +60,26 @@
 			</table>
 		</form>
 	</div>
+
+	<table class="table">
+		<tbody>
+<!-- 			<tr class="text-center" th:each="players, stat:${gameBean.players}"> -->
+<!-- 				<td th:text="'No.'+${stat.count}">No.</td> -->
+<!-- 				<td th:text="${play.records}">玩家分數</td> -->
+<!-- 				<th:block th:each="player : ${players}"> -->
+<!-- 					<td th:text="${player.records[stat.index]}"></td> -->
+<!-- 				</th:block> -->
+<!-- 			</tr> -->
+			<tr class="text-center">
+				<th:block th:each="player,stat : ${gameBean.players}">
+					<td th:text="'No.'+${stat.count}">No.</td>
+					<td th:text="${player.records[stat.index]}"></td>
+				</th:block>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
 	<script>
 		// 按下「輸入玩家人數」送出按鈕觸發事件
 		$("#add_record_btn").on("click", function() {
@@ -82,7 +103,11 @@
 			}
 			$('form').submit(); // 觸發表單提交事件
 		});
+
+		// 回首頁
+		function goIndex() {
+			location.href = "/index";
+		}
 	</script>
-</body>
 
 </html>

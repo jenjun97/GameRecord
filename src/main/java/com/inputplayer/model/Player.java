@@ -12,7 +12,7 @@ public class Player {
 	/**
 	 * 玩家id
 	 */
-	private int playerId;
+	private Integer playerId;
 	
 	/**
 	 * 玩家名稱

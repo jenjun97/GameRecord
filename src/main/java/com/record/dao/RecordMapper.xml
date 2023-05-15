@@ -23,4 +23,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</insert>
 
+	<select id="getPlayerAllRecord" resultType="java.lang.Integer">
+
+		select
+			t.record
+		from
+			t_record t
+		where
+			t.fk_game_id = #{gameId}
+			and t.fk_player_id = #{playerId}
+		order 
+			by t.time asc;
+	</select>
+
 </mapper>

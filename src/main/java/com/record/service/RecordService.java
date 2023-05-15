@@ -6,6 +6,9 @@ import com.inputplayer.model.GameBean;
 import com.inputplayer.model.Player;
 
 public interface RecordService {
+	
+	public GameBean action(GameBean gameBean);
+	
 	/**
 	 * 檢查分數加總是否為0
 	 * 
@@ -14,5 +17,4 @@ public interface RecordService {
 	 */
 	public boolean sumIsZero(List<Player> players);
 
-	public void addRecord(GameBean gameBean);
 }

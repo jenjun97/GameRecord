@@ -16,6 +16,17 @@ public class RecordServiceImpl implements RecordService {
 	@Resource
 	private RecordMapper recordMapper;
 
+	public GameBean action(GameBean gameBean) {
+		addRecord(gameBean);
+		
+		for(Player player:gameBean.getPlayers()) {
+			List<Integer> records = getPlayerAllRecord(gameBean.getGameId(), player.getPlayerId());
+			player.setRecords(records);
+		}
+
+		return gameBean;
+	}
+
 	/**
 	 * 檢查分數加總是否為0
 	 * 
@@ -45,10 +56,12 @@ public class RecordServiceImpl implements RecordService {
 		}
 	}
 
-	@Override
-	public void addRecord(GameBean gameBean) {
+	private void addRecord(GameBean gameBean) {
 		recordMapper.addRecord(gameBean);
 	}
-	
+
+	private List<Integer> getPlayerAllRecord(Integer gameId, Integer playerId) {
+		return recordMapper.getPlayerAllRecord(gameId, playerId);
+	}
 
 }
