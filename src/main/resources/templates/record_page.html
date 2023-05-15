@@ -60,16 +60,21 @@
 	<!-- 顯示分數列表 -->
 	<table class="table">
 		<tbody>
-			<tr class="text-center"	th:each="record,stat1:${gameBean.players[0].records}">
-				<td th:text="${gameBean.players.size}"></td>
-				<td th:text="'No.'+${stat1.size - stat1.count +1}">No.</td>
-				<th:block th:each="player, stat2: ${gameBean.players}">
-					<td th:text="${player.records[stat1.size - stat1.index - 1]}"></td>
-				</th:block>
-			</tr>
-
+<!-- 			<tr class="text-center"	th:each="record,stat1:${gameBean.players[0].records}"> -->
+<!-- 				<td th:text="'No.'+${stat1.size - stat1.count +1}">No.</td> -->
+<!-- 				<th:block th:each="player, stat2: ${gameBean.players}"> -->
+<!-- 					<td th:text="${player.records[stat1.size - stat1.index - 1]}"></td> -->
+<!-- 				</th:block> -->
+<!-- 			</tr> -->
+			<tr:block th:if="${gameBean.players[0].records != null}">
+				<tr class="text-center"
+					th:each="num: ${#numbers.sequence(gameBean.players[0].records.size, 0)}">
+					<td th:text="'No.'+${num +1}">No.</td>
+				</tr>
+			</tr:block>
 		</tbody>
 	</table>
+
 
 </body>
 <script>

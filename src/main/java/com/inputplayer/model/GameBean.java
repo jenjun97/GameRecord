@@ -25,4 +25,9 @@ public class GameBean {
 	 * 玩家資訊
 	 */
 	private List<Player> players = new ArrayList<Player>();
+	
+	/**
+	 * 局數
+	 */
+	private Integer playNum;
 }
