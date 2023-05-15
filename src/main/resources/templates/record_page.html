@@ -22,6 +22,8 @@
 		<button class="btn btn-primary" id="index_btn" onclick="goIndex()">首頁</button>
 	</div>
 	</br>
+
+	<!-- 顯示玩家名稱、總分、輸入分數 -->
 	<div>
 		<form action="/add_record" method="post">
 			<table class="table">
@@ -29,30 +31,24 @@
 					<tr class="text-center">
 						<td>簡稱</td>
 						<th:block th:each="play:${gameBean.players}">
-							<td th:text="${play.playerName}"></td>
+							<td th:text="${play.playerName}">玩家簡稱</td>
 						</th:block>
 					</tr>
 					<tr class="text-center">
 						<td>總分</td>
 						<th:block th:each="play:${gameBean.players}">
-							<td><input class="form-control mb-2" type="hidden"
-								th:name="'players['+${play.playerId}+'].playerId'"
-								name="playerId" th:value="${play.playerId}" /> <input
-								class="form-control mb-2 inputrecord" type="tel"
-								th:name="'players['+${play.playerId}+'].record'" name="record" />
+							<td>
+								<input class="form-control mb-2" type="hidden" th:name="'players['+${play.playerId}+'].playerId'" name="playerId" th:value="${play.playerId}" />
+								<input class="form-control mb-2 inputrecord" type="tel"	th:name="'players['+${play.playerId}+'].record'" name="record" />
 							</td>
 						</th:block>
 					</tr>
 					<tr class="text-center">
-					</tr>
-					<tr class="text-center">
 						<td>
 							<div th:each="play:${gameBean.players}">
-								<input type="hidden"
-									th:name="'players['+${play.playerId}+'].playerName'"
-									th:value="${play.playerName}" />
-							</div> <input type="hidden" name="gameId" th:value="${gameBean.gameId}"
-							value="0" />
+								<input type="hidden" th:name="'players['+${play.playerId}+'].playerName'" th:value="${play.playerName}" />
+							</div>
+							<input type="hidden" name="gameId" th:value="${gameBean.gameId}" value="0" />
 							<button class="btn btn-primary" id="add_record_btn">儲存</button>
 						</td>
 					</tr>
@@ -61,53 +57,49 @@
 		</form>
 	</div>
 
+	<!-- 顯示分數列表 -->
 	<table class="table">
 		<tbody>
-<!-- 			<tr class="text-center" th:each="players, stat:${gameBean.players}"> -->
-<!-- 				<td th:text="'No.'+${stat.count}">No.</td> -->
-<!-- 				<td th:text="${play.records}">玩家分數</td> -->
-<!-- 				<th:block th:each="player : ${players}"> -->
-<!-- 					<td th:text="${player.records[stat.index]}"></td> -->
-<!-- 				</th:block> -->
-<!-- 			</tr> -->
-			<tr class="text-center">
-				<th:block th:each="player,stat : ${gameBean.players}">
-					<td th:text="'No.'+${stat.count}">No.</td>
-					<td th:text="${player.records[stat.index]}"></td>
+			<tr class="text-center"	th:each="record,stat1:${gameBean.players[0].records}">
+				<td th:text="${gameBean.players.size}"></td>
+				<td th:text="'No.'+${stat1.size - stat1.count +1}">No.</td>
+				<th:block th:each="player, stat2: ${gameBean.players}">
+					<td th:text="${player.records[stat1.size - stat1.index - 1]}"></td>
 				</th:block>
 			</tr>
+
 		</tbody>
 	</table>
 
 </body>
-	<script>
-		// 按下「輸入玩家人數」送出按鈕觸發事件
-		$("#add_record_btn").on("click", function() {
-			event.preventDefault(); // 取消預設行為
+<script>
+	// 按下「輸入玩家人數」送出按鈕觸發事件
+	$("#add_record_btn").on("click", function() {
+		event.preventDefault(); // 取消預設行為
 
-			var sumRecord = 0;
-			$('.inputrecord').each(function() {
-				var inputVal = $(this).val();
-				if ($.isNumeric(inputVal)) {
-					sumRecord += parseFloat(inputVal);
-				}
-			});
-
-			if (sumRecord != 0) {
-				// alert
-				Swal.fire({
-					icon : 'error',
-					title : '分數輸入有誤，請檢查'
-				})
-				return;
+		var sumRecord = 0;
+		$('.inputrecord').each(function() {
+			var inputVal = $(this).val();
+			if ($.isNumeric(inputVal)) {
+				sumRecord += parseFloat(inputVal);
 			}
-			$('form').submit(); // 觸發表單提交事件
 		});
 
-		// 回首頁
-		function goIndex() {
-			location.href = "/index";
+		if (sumRecord != 0) {
+			// alert
+			Swal.fire({
+				icon : 'error',
+				title : '分數輸入有誤，請檢查'
+			})
+			return;
 		}
-	</script>
+		$('form').submit(); // 觸發表單提交事件
+	});
+
+	// 回首頁
+	function goIndex() {
+		location.href = "/index";
+	}
+</script>
 
 </html>
