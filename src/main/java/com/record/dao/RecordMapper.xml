@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 该文件存放CRUD的sql语句 -->
 <mapper namespace="com.record.dao.RecordMapper">
+	<!-- 新增該局分數 -->
 	<insert id="addRecord">
 		insert into t_record
 		(
@@ -23,8 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 	</insert>
 
+	<!-- 取出指定玩家的在該局的分數列表 -->
 	<select id="getPlayerAllRecord" resultType="java.lang.Integer">
-
 		select
 			t.record
 		from
